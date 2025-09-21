@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import app from "./firebase";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import AuthPage from "./pages/AuthPage";
+import ProfilePage from "./pages/ProfilePage";
+import app from "./firebase"
 import { getApp } from "firebase/app";
 
 function App() {
@@ -9,10 +17,17 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1>Firebase Test</h1>
-      <p>Check the console for connection status.</p>
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 
