@@ -18,9 +18,9 @@ const LandingPage = () => {
             <p>
               Become a part of our compassionate community and make a lasting impact on the lives of animals in need.
             </p>
-            <a href="#get-involved" className="landing-cta-btn">
-              Get Involved Today
-            </a>
+            <Link to="/auth" className="landing-cta-btn">
+              Join Us
+            </Link>
           </div>
         </section>
 
@@ -91,9 +91,10 @@ const LandingPage = () => {
             <p>
               Sign up today and start your journey as a <strong>Singhdom Animalia Rescue</strong> volunteer. We'll be in touch with more information on how you can help.
             </p>
-            <a href="#" className="landing-volunteer-btn">
+            {/* Optionally, you can remove or keep this button. If you keep it, make it a Link to /auth */}
+            <Link to="/auth" className="landing-volunteer-btn">
               Volunteer Now
-            </a>
+            </Link>
           </div>
         </section>
       </main>
