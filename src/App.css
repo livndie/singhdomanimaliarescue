@@ -1,42 +1,473 @@
-#root {
-  max-width: 1280px;
+/* Contact page */
+
+.contact-root {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.contact-section {
+  text-align: center;
+  max-width: 600px;
   margin: 0 auto;
   padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(60, 130, 246, 0.08);
+  background: #f8fafc;
+}
+
+.contact-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 1.5rem;
+}
+
+.contact-description {
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 2rem;
+}
+
+.contact-home-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.contact-home-link:hover {
+  text-decoration: underline;
+  color: #1e40af;
+}
+
+.contact-form {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-form label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  display: block;
+  color: #2563eb;
+}
+
+.contact-input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  margin-top: 0.2rem;
+  background: #fff;
+}
+
+.contact-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: #f0f6ff;
+}
+
+.contact-submit-btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.contact-submit-btn:hover {
+  background: #1e40af;
+}
+
+/* About Page */
+
+.about-root {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.about-section {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(60, 130, 246, 0.08);
+  background: #f8fafc;
+}
+
+.about-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 1.5rem;
+}
+
+.about-description {
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 2rem;
+}
+
+.about-home-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.about-home-link:hover {
+  text-decoration: underline;
+  color: #1e40af;
+}
+
+.about-mission, .about-team {
+  margin: 2rem 0;
+}
+
+.about-subtitle {
+  font-size: 1.5rem;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+.about-team-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-team-list li {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.about-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.about-contact-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.about-contact-link:hover {
+  text-decoration: underline;
+  color: #1e40af;
+}
+
+
+/* General resets and base styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f8fafc;
+  color: #222;
+}
+
+.landing-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.landing-header {
+  background: #1f5ada;
+  color: #fff;
+  padding: 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.landing-nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.landing-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+}
+
+.landing-nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.landing-nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.landing-nav-links a:hover {
+  color: #dbeafe;
+}
+
+.landing-join-btn {
+  background: #fff;
+  color: #2563eb;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 1rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.landing-join-btn:hover {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.landing-mobile-menu {
+  display: none;
+}
+
+/* Hero Section */
+.landing-hero {
+  background: linear-gradient(90deg, #68a5ee 0%, #1f5ada 100%);
+  color: #fff;
+  padding: 4rem 0 3rem 0;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.landing-hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.landing-hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.landing-cta-btn {
+  background: #fff;
+  color: #2563eb;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.landing-cta-btn:hover {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* About Section */
+.landing-about {
+  background: #fff;
+  padding: 3rem 0;
+}
+
+.landing-about-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 2rem;
+}
+
+.landing-about-img img {
+  width: 350px;
+  max-width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(60, 130, 246, 0.08);
+}
+
+.landing-about-text {
+  flex: 1;
+}
+
+.landing-about-text h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2563eb;
+}
+
+.landing-about-text p {
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+}
+
+/* Mission Section */
+.landing-mission {
+  background: #f1f5f9;
+  padding: 3rem 0;
+}
+
+.landing-mission-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.landing-mission-content h2 {
+  color: #2563eb;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.landing-mission-cards {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.landing-mission-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(60, 130, 246, 0.08);
+  padding: 2rem 1.5rem;
+  flex: 1 1 250px;
+  max-width: 320px;
+  min-width: 220px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.landing-mission-card:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+
+.landing-mission-icon {
+  margin-bottom: 1rem;
+  color: #2563eb;
+}
+
+/* CTA Section */
+.landing-cta {
+  background: #2563eb;
+  color: #fff;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.landing-cta-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.landing-cta-content p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.landing-volunteer-btn {
+  background: #fff;
+  color: #2563eb;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.landing-volunteer-btn:hover {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* Footer */
+.landing-footer {
+  background: #1e293b;
+  color: #fff;
+  padding: 1.5rem 0;
+  margin-top: auto;
+}
+
+.landing-footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  flex-wrap: wrap;
+}
+
+.landing-footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.landing-footer-links a {
+  color: #dbeafe;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.landing-footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .landing-about-content {
+    flex-direction: column;
+    text-align: center;
   }
-  to {
-    transform: rotate(360deg);
+  .landing-mission-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .landing-footer-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 600px) {
+  .landing-nav-links,
+  .landing-join-btn {
+    display: none;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .landing-mobile-menu {
+    display: block;
+  }
+  .landing-nav {
+    padding: 0 1rem;
+  }
+  .landing-about-content,
+  .landing-mission-content {
+    padding: 0 1rem;
+  }
 }
