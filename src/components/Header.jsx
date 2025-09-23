@@ -9,13 +9,13 @@ const Header = () => (
       </Link>
       <div className="landing-nav-links">
         <Link to="/about">About</Link>
-        <a href="#mission">Our Mission</a>
-        <a href="#get-involved">Get Involved</a>
+        {/*<a href="#mission">Our Mission*/}
+        <Link to="/get-involved">Get Involved</Link>
         <Link to="/contact">Contact</Link>
       </div>
-      <a href="#get-involved" className="landing-join-btn">
+      <Link to="/get-involved" className="landing-join-btn">
         Join Us
-      </a>
+      </Link>
       <div className="landing-mobile-menu">
         <button>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
