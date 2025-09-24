@@ -12,4 +12,4 @@ const NotificationsPage = () =>{
         </div>
     );
 };
-export default Notificationspage;
+export default NotificationsPage;
