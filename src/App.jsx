@@ -10,6 +10,7 @@ import ProfilePage from "./pages/ProfilePage";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
 import HistoryPage from "./pages/HistoryPage";
 import Notificationspage from "./pages/NotificationsPage";
+import GetInvolvedPage from "./pages/GetInvolvedPage";
 import app from "./firebase"
 import { getApp } from "firebase/app";
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/dashboard" element={<VolunteerDashboard />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/notifications" element={<Notificationspage />} />
+        <Route path="/get-involved" element={<GetInvolvedPage />} />
       </Routes>
       <Footer />
     </Router>
