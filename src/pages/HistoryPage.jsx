@@ -8,7 +8,7 @@ const HistoryPage = () =>{
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Evenet</th>
+                        <th>Event</th>
                         <th>Hours</th>
                     </tr>
                 </thead>
