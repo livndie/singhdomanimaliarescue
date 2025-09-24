@@ -7,6 +7,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
+import VolunteerDashboard from "./pages/VolunteerDashboard";
+import HistoryPage from "./pages/HistoryPage";
+import Notificationspage from "./pages/NotificationsPage";
 import app from "./firebase"
 import { getApp } from "firebase/app";
 
@@ -25,6 +28,9 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/dashboard" element={<VolunteerDashboard />} />
+        <Route path="/history" element={<HistoryPage />} />
+        <Route path="/notifications" element={<Notificationspage />} />
       </Routes>
       <Footer />
     </Router>
