@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import GetInvolvedPage from "./pages/GetInvolvedPage";
+import EventPage from "./components/EventPage";
 import app from "./firebase"
 import { getApp } from "firebase/app";
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/get-involved" element={<GetInvolvedPage />} />
+        <Route path="/events/new" element={<EventPage />} />
       </Routes>
       <Footer />
     </Router>
