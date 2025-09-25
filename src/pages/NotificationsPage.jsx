@@ -56,7 +56,7 @@ const NotificationsPage = () => {
         <h1>
           Notifications
         </h1>
-        <Link to="/" className="back-link">Back to Dashboard</Link>
+        <Link to="/admin" className="back-link">Back to Dashboard</Link>
       </header>
 
       {/* Recent messages */}
