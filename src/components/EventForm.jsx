@@ -16,7 +16,7 @@ const SKILLS = [
   'Administrative / clerical skills',
   'First aid',
   'Customer service',
-  'Teamwork',
+  'Teamwork'
 ];
 
 //Indicate the importance of the event
@@ -71,6 +71,24 @@ const EventForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  //create a notification whenever an event is created
+  async function createNotificationFromEvent(evt) {
+    const notification = {
+      id: (window.crypto?.randomUUID?.() || String(Date.now())),
+      createdAt: new Date().toISOString(),
+      subject: `${evt.name} (${evt.urgency})`,
+      to: evt.skills.length ? evt.skills.join(', ') : 'All Volunteers',
+      body:
+        `${evt.description}`,
+    };
+
+    // Placeholder to send notification to backend (stub for now)
+    //localStorage so NotificationsPage.jsx can read them (stub for now)
+    const list = JSON.parse(localStorage.getItem('notifications') || '[]');
+    list.unshift(notification);
+    localStorage.setItem('notifications', JSON.stringify(list));
+  }
+
   //Form submission handler
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,8 +96,18 @@ const EventForm = () => {
 
     console.log('Event payload:', form);
     alert('Event created!\n\n' + JSON.stringify(form, null, 2));
+    
+    // Create a notification about the new event
+    createNotificationFromEvent(form).catch((err) => {
+      console.error('Failed to create notification:', err);
+    });
 
-    setForm({ name: '', description: '', location: '', skills: [], urgency: '', date: '' });
+    setForm({ name: '', 
+      description: '', 
+      location: '', 
+      skills: [], 
+      urgency: '', 
+      date: '' });
     setErrors({});
   };
 

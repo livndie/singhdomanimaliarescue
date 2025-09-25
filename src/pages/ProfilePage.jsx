@@ -6,7 +6,20 @@ const US_STATES = new UsaStates().states;
 
 
 const SKILLS = [
-  'Animal Care', 'Event Planning', 'Fundraising', 'Community Outreach', 'Transport', 'Fostering', 'Administrative'
+  'Dog walking',
+  'Cat care',
+  'Small animal handling',
+  'Animal grooming',
+  'Cleaning & sanitation',
+  'Feeding',
+  'Laundry & bedding maintenance',
+  'Facility upkeep',
+  'Photography & social media',
+  'Fundraising & donations management',
+  'Administrative / clerical skills',
+  'First aid',
+  'Customer service',
+  'Teamwork'
 ];
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
