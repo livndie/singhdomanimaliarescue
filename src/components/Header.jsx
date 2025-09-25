@@ -12,6 +12,7 @@
          {/*<a href="#mission">Our Mission*/}
          <Link to="/get-involved">Get Involved</Link>
          <Link to="/contact">Contact</Link>
+         <Link to="/dashboard">VolunteerDashboard</Link>
          <Link to="/admin">Admin</Link>
        </div>
        <Link to="/get-involved" className="landing-join-btn">
@@ -27,5 +28,6 @@
      </nav>
    </header>
  );
+
 
  export default Header;
