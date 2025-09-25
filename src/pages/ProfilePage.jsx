@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { UsaStates } from 'usa-states';
 
 const US_STATES = new UsaStates().states;
+
 
 const SKILLS = [
   'Animal Care', 'Event Planning', 'Fundraising', 'Community Outreach', 'Transport', 'Fostering', 'Administrative'
@@ -11,6 +13,7 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 const TIMES = ['Morning', 'Afternoon', 'Evening'];
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     fullName: '',
     address1: '',
@@ -66,11 +69,12 @@ const ProfilePage = () => {
     }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Validate required fields here if needed
     alert('Profile saved!');
     // Save profile logic here
+    navigate("/dashboard");
   };
 
   return (
