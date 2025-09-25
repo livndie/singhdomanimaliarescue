@@ -9,8 +9,12 @@ import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
 import HistoryPage from "./pages/HistoryPage";
-import Notificationspage from "./pages/NotificationsPage";
+import NotificationsPage from "./pages/NotificationsPage";
 import GetInvolvedPage from "./pages/GetInvolvedPage";
+import EventForm from "./components/EventForm";
+//import AdminEventForm from "./pages/admin/AdminEventForm";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminMatchingForm from "./pages/admin/AdminMatchingForm";
 import app from "./firebase"
 import { getApp } from "firebase/app";
 
@@ -31,8 +35,13 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/dashboard" element={<VolunteerDashboard />} />
         <Route path="/history" element={<HistoryPage />} />
-        <Route path="/notifications" element={<Notificationspage />} />
         <Route path="/get-involved" element={<GetInvolvedPage />} />
+        <Route path="/events/new" element={<EventForm />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="/admin/notifications" element={<NotificationsPage />} />
+        <Route path="/admin/events" element={<EventForm />} />
+        <Route path="/admin/matching" element={<AdminMatchingForm />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
       <Footer />
     </Router>
