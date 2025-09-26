@@ -1,54 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/admin.css';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/admin.css";
 
-//Skills that administrators can mark as required for an event
-const SKILLS = [
-  'Dog walking',
-  'Cat care',
-  'Small animal handling',
-  'Animal grooming',
-  'Cleaning & sanitation',
-  'Feeding',
-  'Laundry & bedding maintenance',
-  'Facility upkeep',
-  'Photography & social media',
-  'Fundraising & donations management',
-  'Administrative / clerical skills',
-  'First aid',
-  'Customer service',
-  'Teamwork'
+// Store + constants
+import { createEvent } from "../lib/adminStore.js";
+import { SKILLS as RAW_SKILLS, URGENCY as RAW_URGENCY } from "../lib/adminData.js";
+const DEFAULT_SKILLS = [
+  "Dog Walking","Cat Care","Small Animal Handling","Animal Grooming",
+  "Cleaning & Sanitation","Feeding","Laundry & Bedding Maintenance",
+  "Facility Upkeep","Photography & Social Media","Fundraising & Donations Management",
+  "Administrative / Clerical Skills","First Aid","Customer Service","Teamwork"
 ];
+const skillsList  = Array.isArray(RAW_SKILLS)  && RAW_SKILLS.length  ? RAW_SKILLS  : DEFAULT_SKILLS;
+const urgencyList = Array.isArray(RAW_URGENCY) && RAW_URGENCY.length ? RAW_URGENCY : ["Low","Medium","High","Critical"];
 
-//Indicate the importance of the event
-const URGENCY = ['Low', 'Medium', 'High', 'Critical'];
+const maxLen = (s, n) => s.trim().length <= n;
 
-const EventForm = () => {
-  //Store form input values
+export default function EventForm() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
-    name: '',
-    description: '',
-    location: '',
+    name: "",
+    description: "",
+    location: "",
     skills: [],
-    urgency: '',
-    date: '',
+    urgency: "",
+    date: "",
   });
-
-  //Store validation errors
   const [errors, setErrors] = useState({});
 
-  //User can immediately start typing in the Event Name field without clicking it
+  // autofocus Event Name
   useEffect(() => {
-    const el = document.getElementById('evt-name');
+    const el = document.getElementById("evt-name");
     if (el) el.focus();
   }, []);
 
-  //Handle text input changes for all fields except skills
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  //Handle checkbox changes for skills
   const handleSkillChange = (e) => {
     const { value, checked } = e.target;
     setForm((f) => ({
@@ -57,65 +48,60 @@ const EventForm = () => {
     }));
   };
 
-  //Validation logic
   const validate = () => {
     const newErrors = {};
-    if (!form.name.trim()) newErrors.name = 'Event Name is required.';
-    else if (form.name.length > 100) newErrors.name = 'Event Name must be ≤ 100 characters.';
-    if (!form.description.trim()) newErrors.description = 'Event Description is required.';
-    if (!form.location.trim()) newErrors.location = 'Location is required.';
-    if (form.skills.length === 0) newErrors.skills = 'Please select at least one skill.';
-    if (!form.urgency) newErrors.urgency = 'Please choose an urgency.';
-    if (!form.date) newErrors.date = 'Please select a date.';
+    if (!form.name.trim()) newErrors.name = "Event Name is required.";
+    else if (!maxLen(form.name, 100)) newErrors.name = "Event Name must be ≤ 100 characters.";
+    if (!form.description.trim()) newErrors.description = "Event Description is required.";
+    if (!form.location.trim()) newErrors.location = "Location is required.";
+    if (form.skills.length === 0) newErrors.skills = "Please select at least one skill.";
+    if (!form.urgency) newErrors.urgency = "Please choose an urgency.";
+    if (!form.date) newErrors.date = "Please select a date.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  //create a notification whenever an event is created
+  // Optional stub: create a notification when an event is created
   async function createNotificationFromEvent(evt) {
     const notification = {
       id: (window.crypto?.randomUUID?.() || String(Date.now())),
       createdAt: new Date().toISOString(),
       subject: `${evt.name} (${evt.urgency})`,
-      to: evt.skills.length ? evt.skills.join(', ') : 'All Volunteers',
-      body:
-        `${evt.description}`,
+      to: evt.skills.length ? evt.skills.join(", ") : "All Volunteers",
+      body: `${evt.description}`,
     };
-
-    // Placeholder to send notification to backend (stub for now)
-    //localStorage so NotificationsPage.jsx can read them (stub for now)
-    const list = JSON.parse(localStorage.getItem('notifications') || '[]');
+    const list = JSON.parse(localStorage.getItem("notifications") || "[]");
     list.unshift(notification);
-    localStorage.setItem('notifications', JSON.stringify(list));
+    localStorage.setItem("notifications", JSON.stringify(list));
   }
 
-  //Form submission handler
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    console.log('Event payload:', form);
-    alert('Event created!\n\n' + JSON.stringify(form, null, 2));
-    
-    // Create a notification about the new event
-    createNotificationFromEvent(form).catch((err) => {
-      console.error('Failed to create notification:', err);
+    // Save to mock store so Manage Events can list/edit it
+    createEvent({
+      name: form.name.trim(),
+      description: form.description.trim(),
+      location: form.location.trim(),
+      requiredSkills: [...form.skills], // store expects "requiredSkills"
+      urgency: form.urgency,
+      date: form.date,
     });
 
-    setForm({ name: '', 
-      description: '', 
-      location: '', 
-      skills: [], 
-      urgency: '', 
-      date: '' });
+    // optional notification
+    createNotificationFromEvent(form).catch(() => {});
+
+    // reset + redirect
+    setForm({ name: "", description: "", location: "", skills: [], urgency: "", date: "" });
     setErrors({});
+    navigate("/admin/events/manage");
   };
 
-  //Create the form UI
   return (
-    <div className="admin-page">{/*new*/}
-      <div className="card">{/*new*/}
-        <h2 style={{ marginTop: 0 }}>Create Event</h2>
+    <div className="admin-page">
+      <div className="card">
+        <h2>Create Event</h2>
         <form onSubmit={handleSubmit} className="event-form" noValidate>
           {/* Event Name */}
           <div className="field">
@@ -144,7 +130,7 @@ const EventForm = () => {
               rows={5}
               value={form.description}
               onChange={handleChange}
-              placeholder="Describe the event goals, logistics, etc."
+              placeholder="Describe the event"
             />
             {errors.description && <div className="error">{errors.description}</div>}
           </div>
@@ -159,7 +145,7 @@ const EventForm = () => {
               rows={3}
               value={form.location}
               onChange={handleChange}
-              placeholder="Address, venue, or meeting point"
+              placeholder="Address or meeting point"
             />
             {errors.location && <div className="error">{errors.location}</div>}
           </div>
@@ -168,7 +154,7 @@ const EventForm = () => {
           <div className="field">
             <label>Required Skills *</label>
             <div className="check-grid">
-              {SKILLS.map((skill) => (
+              {skillsList.map((skill) => (
                 <label key={skill} className="check-pill">
                   <input
                     type="checkbox"
@@ -195,7 +181,7 @@ const EventForm = () => {
               onChange={handleChange}
             >
               <option value="">Select urgency…</option>
-              {URGENCY.map((u) => (
+              {urgencyList.map((u) => (
                 <option key={u} value={u}>
                   {u}
                 </option>
@@ -218,14 +204,12 @@ const EventForm = () => {
             {errors.date && <div className="error">{errors.date}</div>}
           </div>
 
-          {/* Submit Button */}
-          <div className="actions" style={{ marginTop: '0.75rem' }}>
+          {/* Submit */}
+          <div className="actions" style={{ marginTop: "0.75rem" }}>
             <button type="submit">Create Event</button>
           </div>
         </form>
       </div>
     </div>
   );
-};
-
-export default EventForm;
+}
