@@ -38,24 +38,26 @@ function App() {
   return (
     <Router>
       <Header />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/dashboard" element={<VolunteerDashboard />} />
-        <Route path="/history" element={<HistoryPage />} />
-        <Route path="/get-involved" element={<GetInvolvedPage />} />
-        <Route path="/events/new" element={<EventForm />} />
-        <Route path="/notifications" element={<NotificationsPage />} />
-        <Route path="/admin/notifications" element={<NotificationsPage />} />
-        <Route path="/admin/events" element={<EventForm />} />
-        <Route path="/admin/matching" element={<AdminMatchingForm />} />
-        <Route path="/admin/events/manage" element={<ManageEvents />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/dashboard" element={<VolunteerDashboard />} />
+          <Route path="/history" element={<HistoryPage />} />
+          <Route path="/get-involved" element={<GetInvolvedPage />} />
+          <Route path="/events/new" element={<EventForm />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/admin/notifications" element={<NotificationsPage />} />
+          <Route path="/admin/events" element={<EventForm />} />
+          <Route path="/admin/matching" element={<AdminMatchingForm />} />
+          <Route path="/admin/events/manage" element={<ManageEvents />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Routes>
+      </div>
       <Footer />
     </Router>
   );
