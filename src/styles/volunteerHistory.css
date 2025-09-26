@@ -1,0 +1,36 @@
+.history-root {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #f8fafc;
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.history-title {
+    text-align: center;
+    color: #2563ed;
+    margin-bottom: 1.5rem;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.history-table {
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+}
+
+.history-table tr:hover {
+    background: #f1f5f9;
+}

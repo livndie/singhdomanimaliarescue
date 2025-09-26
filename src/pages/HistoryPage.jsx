@@ -1,10 +1,11 @@
-import Reach from "react";
+import React from "react";
+//import "./VolunteerHistory.css";
 
-const HistoryPage = () =>{
-    return(
-        <div>
-            <h1>Your Volunteer History</h1>
-                <table>
+const HistoryPage = () => {
+    return (
+        <div className="history-root"> 
+            <h1 className="history-title">Your Volunteer History</h1>
+                <table className="history-table">
                 <thead>
                     <tr>
                         <th>Date</th>
