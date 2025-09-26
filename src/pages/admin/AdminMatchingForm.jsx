@@ -1,64 +1,111 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { getVolunteers, getEvents, assignVolunteer, isAssigned } from "../../lib/adminStore.js";
+// src/pages/admin/AdminMatchingForm.jsx
+import React, { useMemo, useState } from "react";
+import "../../styles/admin.css";
 
-const score = (vol, evt) => {
-  const skillPts = evt.requiredSkills.reduce((acc, s) => acc + (vol.skills.includes(s) ? 1 : 0), 0);
-  const availPt = vol.availability.includes(evt.date) ? 1 : 0;
-  return skillPts + availPt;
-};
+import {
+  getEvents,
+  getVolunteers,
+  assignVolunteer,
+  isAssigned,
+} from "../../lib/adminStore.js";
 
 export default function AdminMatchingForm() {
-  const [events] = useState(getEvents());
-  const [volunteers] = useState(getVolunteers());
+  const events = getEvents();
+  const volunteers = getVolunteers();
+
   const [selectedEventId, setSelectedEventId] = useState(events[0]?.id || "");
-  const selectedEvent = useMemo(() => events.find(e => e.id === selectedEventId), [events, selectedEventId]);
+  const selectedEvent = useMemo(
+    () => events.find((e) => e.id === selectedEventId),
+    [events, selectedEventId]
+  );
 
-  const candidates = useMemo(() => {
-    if (!selectedEvent) return [];
-    return volunteers
-      .map(v => ({ v, s: score(v, selectedEvent) }))
-      .filter(x => x.s > 0) // only somewhat relevant
-      .sort((a,b) => b.s - a.s);
-  }, [volunteers, selectedEvent]);
-
-  const [refresh, setRefresh] = useState(0); // cheap rerender after assign
-
-  const assign = (volId) => {
-    assignVolunteer(volId, selectedEventId);
-    setRefresh(r => r + 1);
+  // Score function: skills (2 each) + date (1) + time-of-day match (1)
+  const score = (vol, evt) => {
+    let pts = 0;
+    const req = new Set(evt.requiredSkills || []);
+    const has = new Set(vol.skills || []);
+    req.forEach((s) => {
+      if (has.has(s)) pts += 2;
+    });
+    if ((vol.availability || []).includes(evt.date)) pts += 1;
+    if (evt.timeOfDay && (vol.timePreferences || []).includes(evt.timeOfDay)) pts += 1;
+    return pts;
   };
 
+  const ranked = useMemo(() => {
+    if (!selectedEvent) return [];
+    return volunteers
+      .map((v) => ({ v, pts: score(v, selectedEvent) }))
+      .sort((a, b) => b.pts - a.pts);
+  }, [volunteers, selectedEvent]);
+
+  const onAssign = (volId) => {
+    if (!selectedEvent) return;
+    if (isAssigned(volId, selectedEvent.id)) return;
+    assignVolunteer(volId, selectedEvent.id);
+    alert("Assigned!");
+  };
+
+  if (!selectedEvent) {
+    return (
+      <main className="admin-root">
+        <section className="admin-card">
+          <h1 className="admin-title">Volunteer Matching</h1>
+          <p>No events available.</p>
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className="about-root">
-      <section className="about-section">
-        <h1 className="about-title">Volunteer Matching</h1>
+    <main className="admin-root">
+      <section className="admin-card">
+        <h1 className="admin-title">Volunteer Matching</h1>
 
-        <div className="about-mission" style={{ display: "grid", gap: 12 }}>
-          <label>
-            Event
-            <select value={selectedEventId} onChange={e => setSelectedEventId(e.target.value)}>
-              {events.map(evt => (
-                <option key={evt.id} value={evt.id}>
-                  {evt.name} — {evt.date} — needs: {evt.requiredSkills.join(", ")}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <ul className="about-team-list">
-            {candidates.map(({ v, s }) => (
-              <li key={v.id} style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                <strong>{v.name}</strong> — score {s} — skills: {v.skills.join(", ")} — avail: {v.availability.join(", ")}
-                {isAssigned(v.id, selectedEventId) ? (
-                  <em style={{ marginLeft: 8 }}>(already assigned)</em>
-                ) : (
-                  <button type="button" className="about-contact-link" onClick={() => assign(v.id)}>
-                    Assign
-                  </button>
-                )}
-              </li>
+        <div className="field" style={{ maxWidth: 520 }}>
+          <label>Choose Event</label>
+          <select value={selectedEventId} onChange={(e) => setSelectedEventId(e.target.value)}>
+            {events.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.name} — {e.date} {e.timeOfDay ? `• ${e.timeOfDay}` : ""}
+              </option>
             ))}
-          </ul>
+          </select>
+          <div className="help">
+            Required: {(selectedEvent.requiredSkills || []).join(", ") || "None"} • Time:{" "}
+            {selectedEvent.timeOfDay || "—"}
+          </div>
+        </div>
+
+        <div className="table-wrap">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Volunteer</th>
+                <th>Skills</th>
+                <th>Avail. Dates</th>
+                <th>Time Prefs</th>
+                <th style={{ width: 120 }}>Score</th>
+                <th style={{ width: 120 }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ranked.map(({ v, pts }) => (
+                <tr key={v.id}>
+                  <td><strong>{v.name}</strong></td>
+                  <td>{v.skills?.join(", ") || "—"}</td>
+                  <td>{v.availability?.join(", ") || "—"}</td>
+                  <td>{v.timePreferences?.join(", ") || "—"}</td>
+                  <td><span className="badge badge-medium">{pts}</span></td>
+                  <td>
+                    <button className="btn btn-primary" onClick={() => onAssign(v.id)}>
+                      Assign
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
     </main>
