@@ -1,5 +1,3 @@
-// src/lib/adminData.js
-
 // ---- constants used by forms ----
 export const SKILLS = [
   "Dog Walking",
@@ -19,6 +17,8 @@ export const SKILLS = [
 ];
 
 export const URGENCY = ["Low", "Medium", "High", "Critical"];
+
+export const TIME_OF_DAY = ["Morning", "Afternoon", "Evening"];
 
 // ---- seed data for local dev ----
 export const EVENTS = [
