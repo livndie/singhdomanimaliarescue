@@ -1,5 +1,5 @@
 import React from "react";
-//import "./VolunteerHistory.css";
+import "../styles/volunteerHistory.css";
 
 const HistoryPage = () => {
     return (

@@ -130,7 +130,7 @@ textarea {
 
 .admin-dashboard {
   display: block;
-  max-width: 80vw;
+  min-width: 80vw;
   margin: 2rem auto;
   padding: 2rem;
 }
