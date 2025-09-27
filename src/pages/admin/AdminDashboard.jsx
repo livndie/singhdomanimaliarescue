@@ -5,17 +5,16 @@ export default function AdminDashboard() {
   return (
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
-      <p className="subtitle">Manage events, volunteers, and notifications all in one place.</p>
-
+      <p className="subtitle">Manage events, volunteers, and notifications all in one place!</p>
       <div className="dashboard-grid">
         {/* Event Management */}
         <div className="dashboard-card">
           <div className="icon" style={{ fontSize: 32, marginBottom: 12 }}>📅</div>
           <h2>Event Management</h2>
           <p>Create and manage upcoming events for volunteers.</p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
-            <Link to="/admin/events" className="btn">Create an Event</Link>
-            <Link to="/admin/events/manage" className="btn btn-outline">Manage Events</Link>
+          <div className="btn-row">
+            <Link to="/admin/events" className="btn btn-primary">Create an Event</Link>
+            <Link to="/admin/events/manage" className="btn btn-secondary">Manage Events</Link>
           </div>
         </div>
 
