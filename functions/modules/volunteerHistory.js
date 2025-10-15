@@ -39,7 +39,6 @@ router.post("/", (req, res) => {
   };
 
   store.history.push(newEntry);
-
   res.status(201).json({
     success: true,
     message: "History entry added successfully.",
