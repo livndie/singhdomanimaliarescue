@@ -1,36 +1,49 @@
-.history-root {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #f8fafc;
-    border-radius: 1rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+.vol-history-root {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  padding: 2rem 0;
 }
 
-.history-title {
-    text-align: center;
-    color: #2563ed;
-    margin-bottom: 1.5rem;
+.vol-history-title {
+  font-size: 2rem;
+  color: #2563eb;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-align: center;
 }
 
-.history-table {
-    width: 100%;
-    border-collapse: collapse;
+.vol-history-table {
+  width: 100%;
+  max-width: 900px;
+  border-collapse: collapse;
+  background: #f8fafc;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(60,130,246,0.08);
+  overflow: hidden;
 }
 
-.history-table th,
-.history-table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: left;
+.vol-history-th, .vol-history-td {
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1rem;
+  text-align: left;
 }
 
-.history-table {
-    background: #2563eb;
-    color: white;
-    font-weight: 600;
+.vol-history-th {
+  background: #f1f5f9;
+  color: #2563eb;
+  font-weight: 600;
 }
 
-.history-table tr:hover {
-    background: #f1f5f9;
+.vol-history-row:nth-child(even) {
+  background: #f3f4f6;
+}
+
+.vol-history-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+  font-size: 1.1rem;
 }

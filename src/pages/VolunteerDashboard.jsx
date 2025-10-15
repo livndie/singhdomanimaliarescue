@@ -11,6 +11,7 @@ export default function VolunteerDashboard() {
 
             <div className="dashboard-grid">
                 <div className="dashboard-card">
+                    <div className="icon" style={{ fontSize: 32, marginBottom: 12 }}>📅</div>
                     <h2>Volunteer History</h2>
                     <p>View all your past volunteering activities and logged hours.</p>
                     <Link to="/history" className="dashboard-btn">
@@ -19,6 +20,7 @@ export default function VolunteerDashboard() {
                 </div>
 
                 <div className="dashboard-card">
+                    <div className="icon" style={{ fontSize: 32, marginBottom: 12 }}>⚙️</div>
                     <h2>Edit Profile</h2>
                     <p>Update your personal info and availability settings.</p>
                     <Link to="/profile" className="dashboard-btn">
@@ -27,6 +29,7 @@ export default function VolunteerDashboard() {
                 </div>
 
                 <div className="dashboard-card">
+                    <div className="icon" style={{ fontSize: 32, marginBottom: 12 }}>🔔</div>
                     <h2>Notifications</h2>
                     <p>Check for new assignments, messages, or updates.</p>
                     <Link to="/notifications" className="dashboard-btn">

@@ -1,20 +1,12 @@
+// src/components/EventForm.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/admin.css";
 
-// Store + constants
+import { SKILLS, URGENCY, TIME_OF_DAY } from "../lib/adminData.js";
 import { createEvent } from "../lib/adminStore.js";
-import { SKILLS as RAW_SKILLS, URGENCY as RAW_URGENCY } from "../lib/adminData.js";
-const DEFAULT_SKILLS = [
-  "Dog Walking","Cat Care","Small Animal Handling","Animal Grooming",
-  "Cleaning & Sanitation","Feeding","Laundry & Bedding Maintenance",
-  "Facility Upkeep","Photography & Social Media","Fundraising & Donations Management",
-  "Administrative / Clerical Skills","First Aid","Customer Service","Teamwork"
-];
-const skillsList  = Array.isArray(RAW_SKILLS)  && RAW_SKILLS.length  ? RAW_SKILLS  : DEFAULT_SKILLS;
-const urgencyList = Array.isArray(RAW_URGENCY) && RAW_URGENCY.length ? RAW_URGENCY : ["Low","Medium","High","Critical"];
 
-const maxLen = (s, n) => s.trim().length <= n;
+const maxLen = (s, n) => (s || "").trim().length <= n;
 
 export default function EventForm() {
   const navigate = useNavigate();
@@ -23,13 +15,14 @@ export default function EventForm() {
     name: "",
     description: "",
     location: "",
-    skills: [],
+    skills: [],       // UI field; saved as requiredSkills
     urgency: "",
     date: "",
+    timeOfDay: "",    // NEW
   });
+
   const [errors, setErrors] = useState({});
 
-  // autofocus Event Name
   useEffect(() => {
     const el = document.getElementById("evt-name");
     if (el) el.focus();
@@ -57,16 +50,17 @@ export default function EventForm() {
     if (form.skills.length === 0) newErrors.skills = "Please select at least one skill.";
     if (!form.urgency) newErrors.urgency = "Please choose an urgency.";
     if (!form.date) newErrors.date = "Please select a date.";
+    if (!form.timeOfDay) newErrors.timeOfDay = "Please select a time of day."; // NEW
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Optional stub: create a notification when an event is created
+  // Optional notification stub so your Notifications page can display something
   async function createNotificationFromEvent(evt) {
     const notification = {
       id: (window.crypto?.randomUUID?.() || String(Date.now())),
       createdAt: new Date().toISOString(),
-      subject: `${evt.name} (${evt.urgency})`,
+      subject: `${evt.name} (${evt.urgency}${evt.timeOfDay ? ` • ${evt.timeOfDay}` : ""})`,
       to: evt.skills.length ? evt.skills.join(", ") : "All Volunteers",
       body: `${evt.description}`,
     };
@@ -79,21 +73,29 @@ export default function EventForm() {
     e.preventDefault();
     if (!validate()) return;
 
-    // Save to mock store so Manage Events can list/edit it
+    // Save to mock store (so Manage Events + Matching can use it)
     createEvent({
       name: form.name.trim(),
       description: form.description.trim(),
       location: form.location.trim(),
-      requiredSkills: [...form.skills], // store expects "requiredSkills"
+      requiredSkills: [...form.skills],
       urgency: form.urgency,
       date: form.date,
+      timeOfDay: form.timeOfDay, // NEW
     });
 
-    // optional notification
     createNotificationFromEvent(form).catch(() => {});
 
-    // reset + redirect
-    setForm({ name: "", description: "", location: "", skills: [], urgency: "", date: "" });
+    // Reset & go to Manage Events
+    setForm({
+      name: "",
+      description: "",
+      location: "",
+      skills: [],
+      urgency: "",
+      date: "",
+      timeOfDay: "",
+    });
     setErrors({});
     navigate("/admin/events/manage");
   };
@@ -101,7 +103,8 @@ export default function EventForm() {
   return (
     <div className="admin-page">
       <div className="card">
-        <h2>Create Event</h2>
+        <h2 style={{ marginTop: 0 }}>Create Event</h2>
+
         <form onSubmit={handleSubmit} className="event-form" noValidate>
           {/* Event Name */}
           <div className="field">
@@ -130,7 +133,7 @@ export default function EventForm() {
               rows={5}
               value={form.description}
               onChange={handleChange}
-              placeholder="Describe the event"
+              placeholder="Describe the event goals, logistics, etc."
             />
             {errors.description && <div className="error">{errors.description}</div>}
           </div>
@@ -145,7 +148,7 @@ export default function EventForm() {
               rows={3}
               value={form.location}
               onChange={handleChange}
-              placeholder="Address or meeting point"
+              placeholder="Address, venue, or meeting point"
             />
             {errors.location && <div className="error">{errors.location}</div>}
           </div>
@@ -154,7 +157,7 @@ export default function EventForm() {
           <div className="field">
             <label>Required Skills *</label>
             <div className="check-grid">
-              {skillsList.map((skill) => (
+              {SKILLS.map((skill) => (
                 <label key={skill} className="check-pill">
                   <input
                     type="checkbox"
@@ -181,7 +184,7 @@ export default function EventForm() {
               onChange={handleChange}
             >
               <option value="">Select urgency…</option>
-              {urgencyList.map((u) => (
+              {URGENCY.map((u) => (
                 <option key={u} value={u}>
                   {u}
                 </option>
@@ -202,6 +205,24 @@ export default function EventForm() {
               onChange={handleChange}
             />
             {errors.date && <div className="error">{errors.date}</div>}
+          </div>
+
+          {/* Time of Day */}
+          <div className="field">
+            <label>Time of Day *</label>
+            <div className="pill-grid">
+              {TIME_OF_DAY.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`pill ${form.timeOfDay === t ? "pill-on" : ""}`}
+                  onClick={() => setForm((f) => ({ ...f, timeOfDay: t }))}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+            {errors.timeOfDay && <div className="error">{errors.timeOfDay}</div>}
           </div>
 
           {/* Submit */}
