@@ -16,7 +16,7 @@ import EventForm from "./components/EventForm";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminMatchingForm from "./pages/admin/AdminMatchingForm";
 import ManageEvents from "./pages/admin/ManageEvents";
-import app from "./firebase"
+import app from "./firebase/firebase"
 import { getApp } from "firebase/app";
 import { useLocation } from "react-router-dom";
 
