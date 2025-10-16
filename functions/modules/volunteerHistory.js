@@ -2,40 +2,43 @@ const express = require("express");
 const router = express.Router();
 const { validateHistoryEntry } = require("../utils/validation");
 
-//dummy volunteer history hardcoded
-let volunteerHistory = [
-  { id: 1, date: "2025-08-21", event: "Dog Grooming", hours: 3 },
-  { id: 2, date: "2025-09-10", event: "Dog Park Cleanup", hours: 2 },
-  { id: 3, date: "2025-09-15", event: "Cat Grooming", hours: 3 },
-  { id: 4, date: "2025-09-28", event: "Dog Park Cleanup", hours: 2},
-  { id: 5, date: "2025-10-01", event: "Bird Feeding and Cage Cleanup", hours: 4}
-];
+// NEW: use the shared in-memory store instead of a local array
+const { store } = require("./store");
 
-//get all volunteer history
+// get all volunteer history
 router.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    data: volunteerHistory,
+    data: store.history,
   });
 });
 
-//post new volunteer history entry w validation
+// post new volunteer history entry w validation
 router.post("/", (req, res) => {
-  const { date, event, hours } = req.body;
-  const validationError = validateHistoryEntry({ date, event, hours });
+  const { volunteerId, date, event, hours } = req.body;
 
+  // keep the original validator call exactly as before
+  const validationError = validateHistoryEntry({ date, event, hours });
   if (validationError) {
     return res.status(400).json({ success: false, error: validationError });
   }
 
+  // make sure we have a sequence for IDs
+  if (typeof store._historySeq !== "number") {
+    const lastId = store.history?.[store.history.length - 1]?.id || 0;
+    store._historySeq = lastId + 1;
+  }
+
   const newEntry = {
-    id: volunteerHistory.length + 1,
+    id: store._historySeq++,
+    // volunteerId is optional for backward compatibility, but included if provided
+    ...(volunteerId ? { volunteerId } : {}),
     date,
     event,
     hours,
   };
 
-  volunteerHistory.push(newEntry);
+  store.history.push(newEntry);
 
   res.status(201).json({
     success: true,
