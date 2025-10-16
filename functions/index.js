@@ -28,50 +28,27 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const volunteerHistory = require("./modules/volunteerHistory");
 
+// NEW: bring in the shared store so all endpoints read the same data
+const { store } = require("./modules/store");
+
 const express = require("express");
 
-// const mockVolunteerHistory = [
-//     { id: 1, volunteerId: "vol001", date: "2025-08-21", event: "Dog Grooming", hours: 3 },
-//     { id: 2, volunteerId: "vol001", date: "2025-09-10", event: "Dog Park Cleanup", hours: 2 },
-//     { id: 3, volunteerId: "vol001", date: "2025-09-15", event: "Cat Grooming", hours: 3 },
-//     { id: 4, volunteerId: "vol001", date: "2025-09-28", event: "Dog Park Cleanup", hours: 2},
-//     { id: 5, volunteerId: "vol001", date: "2025-10-01", event: "Bird Feeding and Cage Cleanup", hours: 4}
-// ];
-
-//https endpoint that returns volunteer history
+// https endpoint that returns volunteer history
 exports.getVolunteerHistory = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
+        // NEW: return the unified store data (replaces hard-coded array)
         res.status(200).json({
-            data: [
-                { id: 1, volunteerId: "vol001", date: "2025-08-21", event: "Dog Grooming", hours: 3 },
-                { id: 2, volunteerId: "vol001", date: "2025-09-10", event: "Dog Park Cleanup", hours: 2 },
-                { id: 3, volunteerId: "vol001", date: "2025-09-15", event: "Cat Grooming", hours: 3 },
-                { id: 4, volunteerId: "vol001", date: "2025-09-28", event: "Dog Park Cleanup", hours: 2},
-                { id: 5, volunteerId: "vol001", date: "2025-10-01", event: "Bird Feeding and Cage Cleanup", hours: 4}
-            ],
+            data: store.history,
         });
     });
 });
-//     res.set("Access-Control-Allow-Origin", "*"); // allow requests from your front end
-//     res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
-//     res.set("Access-Control-Allow-Headers", "Content-Type");
 
-//     // handle pre-flight request for CORS
-//     if (req.method === "OPTIONS") {
-//         return res.status(204).send("");
-//     }
-//         // for now, just return the hard-coded data
-//     return res.status(200).json({
-//         success: true,
-//         data: mockVolunteerHistory
-//   });
-// });
 admin.initializeApp();
 const app = express();
 app.use(express.json());
 
-app.use("history", volunteerHistory);
+// FIX: add leading slash so the router mounts correctly
+app.use("/history", volunteerHistory);
 
 // Export the API as an HTTPS function
 exports.api = functions.https.onRequest(app);
-
