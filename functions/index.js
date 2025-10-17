@@ -27,16 +27,9 @@ setGlobalOptions({ maxInstances: 10 });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const volunteerHistory = require("./modules/volunteerHistory");
+const volunteerMatching = require("./modules/volunteerMatching");
 
 const express = require("express");
-
-// const mockVolunteerHistory = [
-//     { id: 1, volunteerId: "vol001", date: "2025-08-21", event: "Dog Grooming", hours: 3 },
-//     { id: 2, volunteerId: "vol001", date: "2025-09-10", event: "Dog Park Cleanup", hours: 2 },
-//     { id: 3, volunteerId: "vol001", date: "2025-09-15", event: "Cat Grooming", hours: 3 },
-//     { id: 4, volunteerId: "vol001", date: "2025-09-28", event: "Dog Park Cleanup", hours: 2},
-//     { id: 5, volunteerId: "vol001", date: "2025-10-01", event: "Bird Feeding and Cage Cleanup", hours: 4}
-// ];
 
 //https endpoint that returns volunteer history
 exports.getVolunteerHistory = functions.https.onRequest((req, res) => {
@@ -52,6 +45,9 @@ exports.getVolunteerHistory = functions.https.onRequest((req, res) => {
         });
     });
 });
+
+//http endpoint that returns volunteer matching 
+
 //     res.set("Access-Control-Allow-Origin", "*"); // allow requests from your front end
 //     res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
 //     res.set("Access-Control-Allow-Headers", "Content-Type");

@@ -3,6 +3,7 @@ const router = express.Router();
 const { validateHistoryEntry } = require("../utils/validation");
 
 //dummy volunteer history hardcoded
+//add in location!
 let volunteerHistory = [
   { id: 1, date: "2025-08-21", event: "Dog Grooming", hours: 3 },
   { id: 2, date: "2025-09-10", event: "Dog Park Cleanup", hours: 2 },

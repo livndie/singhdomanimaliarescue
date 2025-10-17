@@ -11,7 +11,7 @@ const HistoryPage = () => {
             .then ((data) => {
                 setHistory(data.data || []);
                 setLoading(false);
-            })
+            }) 
             .catch((err) => {
                 console.error("Error fetching history:", err);
                 setLoading(false);
@@ -21,8 +21,8 @@ const HistoryPage = () => {
     if (loading) {
         return <p style={{ textAlign: "center" }}>Loading...</p>;
     }
-    return (
-        <div className="history-root"> 
+    return ( //history-root
+        <div className="history-container"> 
             <h1 className="history-title">Your Volunteer History</h1>
                 <table className="history-table">
                 <thead>

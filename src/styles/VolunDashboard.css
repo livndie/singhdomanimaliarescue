@@ -1,3 +1,94 @@
+.volunteer-dashboard {
+    display: block;
+    min-width: 80vw;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.dashboard-root {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: #fff;
+    padding: 2rem 1rem;
+}
+
+.dashboard-section {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: #f8fafc;
+    box-shadow: 0 2px 16px rgba(60, 130, 246, 0.08);
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2563eb;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/*grid for volunteer dashboard cards*/
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/*card styling*/
+.dashboard-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card .icon {
+  width: 40px;
+  height: 40px;
+  color: #2563eb; /* blue */
+  margin-bottom: 0.75rem;
+}
+
+.dashboard-card h2 {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.dashboard-card p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+
+/*buttons*/
+.dashboard-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #fff;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.dashboard-btn:hover {
+  background: #1e4ed8;
+}
+
 .history-container {
     max-width: 900px;
     margin: 2rem auto;
@@ -5,35 +96,34 @@
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  }
-  
-  .history-title {
+}
+
+.history-title {
     text-align: center;
     color: #333;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     font-weight: 600;
-  }
-  
-  .history-table {
+}
+
+.history-table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  .history-table th {
+}
+
+.history-table th {
     background: #2563eb;
     color: #fff;
     padding: 0.75rem;
     text-align: left;
     border-radius: 8px 8px 0 0;
-  }
-  
-  .history-table td {
+}
+
+.history-table td {
     padding: 0.75rem;
     border-bottom: 1px solid #eee;
-  }
-  
-  .history-table tr:hover {
+}
+
+.history-table tr:hover {
     background: #f9fafb;
-  }
-  
+}
