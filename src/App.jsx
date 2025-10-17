@@ -7,6 +7,13 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminMatchingForm from "./pages/admin/AdminMatchingForm";
+import ManageEvents from "./pages/admin/ManageEvents";
+import VolunteerDashboard from "./pages/VolunteerDashboard";
+import HistoryPage from "./pages/HistoryPage";
+import NotificationsPage from "./pages/NotificationsPage";
+
 import { app } from "./firebase/config";
 import { AuthProvider } from "./context/AuthContext"; 
 import ProtectedRoute from "./components/ProtectedRoute";
