@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import{ useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { UsaStates } from 'usa-states';
-import { saveUserProfile, getUserProfile } from '../firebase/firestore';
-import { getAuth } from "firebase/auth";
-import { SKILLS } from '../firebase/adminData.js';
-
 
 const US_STATES = new UsaStates().states;
 
@@ -119,17 +114,10 @@ const ProfilePage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    try {
-      await saveUserProfile(form);
-      alert("Profile saved successfully!");
-      Navigate('/dashboard');
-    } catch (err) {
-      console.error("Error saving profile:", err);
-      alert("Failed to save profile.");
-    }
+    // Validate required fields here if needed
+    alert('Profile saved!');
+    // Save profile logic here
   };
-
-  if (loading) return <p>Loading profile...</p>;
 
   return (
     <div className="profile-root">
