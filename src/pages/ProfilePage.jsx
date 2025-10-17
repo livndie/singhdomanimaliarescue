@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { UsaStates } from 'usa-states';
+import { saveUserProfile, getUserProfile } from '../firebase/firestore';
+import { getAuth } from "firebase/auth";
+
 
 const US_STATES = new UsaStates().states;
-
-const SKILLS = [
-  'Animal Care', 'Event Planning', 'Fundraising', 'Community Outreach', 'Transport', 'Fostering', 'Administrative'
-];
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const TIMES = ['Morning', 'Afternoon', 'Evening'];
@@ -21,21 +20,75 @@ const ProfilePage = () => {
     zip: '',
     skills: [],
     preferences: '',
-    availability: {}, // { Monday: { Morning: true, Afternoon: false, ... }, ... }
+    availability: {},
   });
+  const [loading, setLoading] = useState(true);
 
-  // Initialize availability if not set
-  React.useEffect(() => {
-    if (Object.keys(form.availability).length === 0) {
-      const initial = {};
-      DAYS.forEach(day => {
-        initial[day] = {};
-        TIMES.forEach(time => {
-          initial[day][time] = false;
+  // Initialize availability and load existing profile
+  useEffect(() => {
+    const initializeForm = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (!user) {
+        console.error("No logged-in user!");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        let data = await getUserProfile();
+
+        // If user document doesn't exist, create with defaults
+        if (!data) {
+          const defaultProfile = {
+            fullName: "",
+            address1: "",
+            address2: "",
+            city: "",
+            state: "",
+            zip: "",
+            skills: [],
+            preferences: "",
+            availability: {},
+            isAdmin: false,
+            assignedTasks: [0],
+            email: user.email || "",
+            createdAt: new Date(),
+          };
+
+          // Initialize empty availability
+          DAYS.forEach(day => {
+            defaultProfile.availability[day] = {};
+            TIMES.forEach(time => {
+              defaultProfile.availability[day][time] = false;
+            });
+          });
+
+          await saveUserProfile(defaultProfile);
+          data = defaultProfile;
+        }
+
+        setForm({
+          fullName: data.fullName || "",
+          address1: data.address1 || "",
+          address2: data.address2 || "",
+          city: data.city || "",
+          state: data.state || "",
+          zip: data.zip || "",
+          skills: data.skills || [],
+          preferences: data.preferences || "",
+          availability: data.availability || {},
         });
-      });
-      setForm(f => ({ ...f, availability: initial }));
-    }
+
+      } catch (err) {
+        console.error("Error initializing profile:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeForm();
     // eslint-disable-next-line
   }, []);
 
@@ -57,10 +110,7 @@ const ProfilePage = () => {
       ...f,
       availability: {
         ...f.availability,
-        [day]: {
-          ...f.availability[day],
-          [time]: !f.availability[day][time]
-        }
+        [day]: { ...f.availability[day], [time]: !f.availability[day][time] }
       }
     }));
   };
