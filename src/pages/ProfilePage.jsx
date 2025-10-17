@@ -2,26 +2,13 @@ import React, { useState } from 'react';
 import { UsaStates } from 'usa-states';
 import { saveUserProfile, getUserProfile } from '../firebase/firestore';
 import { getAuth } from "firebase/auth";
+import { SKILLS } from '../firebase/adminData.js';
 
 
 const US_STATES = new UsaStates().states;
 
-
 const SKILLS = [
-  'Dog walking',
-  'Cat care',
-  'Small animal handling',
-  'Animal grooming',
-  'Cleaning & sanitation',
-  'Feeding',
-  'Laundry & bedding maintenance',
-  'Facility upkeep',
-  'Photography & social media',
-  'Fundraising & donations management',
-  'Administrative / clerical skills',
-  'First aid',
-  'Customer service',
-  'Teamwork'
+  'Animal Care', 'Event Planning', 'Fundraising', 'Community Outreach', 'Transport', 'Fostering', 'Administrative'
 ];
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -41,6 +28,18 @@ const ProfilePage = () => {
     availability: {},
   });
   const [loading, setLoading] = useState(true);
+
+  const initializeAvailability = (dataAvailability = {}) => {
+    const availability = {};
+    DAYS.forEach(day => {
+      availability[day] = {};
+      TIMES.forEach(time => {
+        // Use existing value if it exists, otherwise false
+        availability[day][time] = dataAvailability[day]?.[time] ?? false;
+      });
+    });
+    return availability;
+  };
 
   // Initialize availability and load existing profile
   useEffect(() => {
@@ -96,7 +95,7 @@ const ProfilePage = () => {
           zip: data.zip || "",
           skills: data.skills || [],
           preferences: data.preferences || "",
-          availability: data.availability || {},
+          availability: initializeAvailability(data.availability),
         });
 
       } catch (err) {
@@ -128,7 +127,10 @@ const ProfilePage = () => {
       ...f,
       availability: {
         ...f.availability,
-        [day]: { ...f.availability[day], [time]: !f.availability[day][time] }
+        [day]: {
+          ...f.availability[day], // if undefined, spread {} instead
+          [time]: !(f.availability[day]?.[time] ?? false) // default to false
+        }
       }
     }));
   };
