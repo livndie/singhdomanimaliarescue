@@ -15,38 +15,14 @@ const AuthPage = () => {
 
 
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-
-    // Simple email regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
-
-    try {
-      if (isSignup) {
-        await signUp(form.email, form.password);
-        alert('Signup successful!');
-      } else {
-        await login(form.email, form.password);
-        alert('Login successful!');
-      }
-      setForm({ email: '', password: '' });
-      navigate('/dashboard');
-    } catch (error) {
-      alert(error.message);
-    }
+    // Placeholder: handle signup or login logic here
+    alert(isSignup ? 'Signup successful!' : 'Login successful!');
+    setForm({ email: '', password: '' });
+    // Redirect to profile page after login/signup
+    navigate('/profile');
   };
-
-  useEffect(() => {
-    if (!loading && user) {
-      if (user.isAdmin) navigate('/admin');
-      else navigate('/dashboard');
-    }
-  }, [user, loading, navigate]);
-
 
   return (
     <div className="auth-root">
