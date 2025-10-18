@@ -15,11 +15,19 @@ const AuthPage = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    // Placeholder: handle signup or login logic here
-    alert(isSignup ? 'Signup successful!' : 'Login successful!');
-    setForm({ email: '', password: '' });
-    // Redirect to profile page after login/signup
-    navigate('/profile');
+    try {
+      if (isSignup) {
+        await signUp(form.email, form.password);
+        alert('Signup successful!');
+      } else {
+        await login(form.email, form.password);
+        alert('Login successful!');
+      }
+      setForm({ email: '', password: '' });
+      navigate('/profile');
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
