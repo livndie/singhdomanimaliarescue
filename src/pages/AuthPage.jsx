@@ -13,6 +13,8 @@ const AuthPage = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+
+
   const handleSubmit = e => {
     e.preventDefault();
     try {
@@ -24,11 +26,19 @@ const AuthPage = () => {
         alert('Login successful!');
       }
       setForm({ email: '', password: '' });
-      navigate('/profile');
+      navigate('/dashboard');
     } catch (error) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    if (!loading && user) {
+      if (user.isAdmin) navigate('/admin');
+      else navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
+
 
   return (
     <div className="auth-root">
