@@ -12,28 +12,30 @@ const demoMessages =[
 
 
 const NotificationsPage = () => {
-  // const [messages, setMessages] = useState([]); //this is to run backend call
-  // const [loading, setLoading] = useState(true);
-  // const [err, setErr] = useState(null);
-  // const location = useLocation();
-   const [messages, setMessages] = useState(demoMessages); //this is to run backend call
-   const [loading, setLoading] = useState(false);
-   const [err, setErr] = useState(null);
-   const location = useLocation();
- 
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
+  const location = useLocation();
+
   const user = JSON.parse(localStorage.getItem("currentUser") || "null");
-  const backHref = location.pathname.startsWith("/admin")
-    ? "/admin"
-    : user?.role === "admin"
+  const isAdmin = user?.isAdmin || false;
+
+  const backHref = location.pathname.startsWith("/admin") || isAdmin
     ? "/admin"
     : "/dashboard";
 
   useEffect(() => {
+    if (!user) {
+      setErr("No logged-in user found.");
+      setLoading(false);
+      return;
+    }
+
     let alive = true;
     (async () => {
       try {
         setLoading(true);
-        const data = await apiGet("/notifications"); // backend call
+        const data = await listNotifications();
         if (!alive) return;
         //setMessages(data);
         //conditiopnal to keep demo if backend is empty
@@ -49,8 +51,31 @@ const NotificationsPage = () => {
         if (alive) setLoading(false);
       }
     })();
+
     return () => { alive = false; };
   }, []);
+
+  /* ----------------- Send notification ----------------- */
+  const handleSend = async (e) => {
+    e.preventDefault();
+    const subject = e.target.subject.value;
+    const body = e.target.body.value;
+
+    try {
+      await createNotification({
+        subject,
+        body,
+        audience: { roles: ["volunteer"] }, // target group
+      });
+      e.target.reset();
+      alert("Notification sent!");
+      // Refresh list after sending
+      const updated = await listNotifications();
+      setMessages(updated);
+    } catch (err) {
+      alert("Failed to send notification: " + err.message);
+    }
+  };
 
   return (
     <div className="notifications-container">
@@ -60,28 +85,7 @@ const NotificationsPage = () => {
       </header>
 
       {user?.role === "admin" && (
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const subject = e.target.subject.value;
-            const body = e.target.body.value;
-            try {
-              await createNotification({
-                subject,
-                body,
-                audience: { roles: ["volunteer"] }, // target group
-              });
-              e.target.reset();
-              alert("Notification sent!");
-              // Refresh list after sending
-              const updated = await apiGet("/notifications");
-              setMessages(updated);
-            } catch (err) {
-              alert("Failed to send notification: " + err.message);
-            }
-          }}
-          className="card admin-send-form"
-        >
+        <form onSubmit={handleSend} className="card admin-send-form">
           <h3>Send a New Notification</h3>
           <input
             type="text"
@@ -104,24 +108,20 @@ const NotificationsPage = () => {
 
       <section className="card">
         <h2>Recent Notifications</h2>
-
         {loading && <p>Loading…</p>}
         {err && <p className="notifications-empty">{err}</p>}
-
-        {!loading && !err && messages.length === 0 && (
-          <p>No messages yet.</p>
-        )}
+        {!loading && !err && messages.length === 0 && <p>No messages yet.</p>}
 
         {!loading && !err && messages.length > 0 && (
-          <ul className="messages-list"> 
+          <ul className="messages-list">
             {messages.map((m) => (
               <li key={m.id}>
-                <div className="msg-subject">{m.subject}</div>
+                <div className="msg-subject">{m.subject || m.title}</div>
                 <div className="msg-meta">
-                  {m.from ? <>From: {m.from} • </> : null}
-                  {m.to ? <>To: {m.to}</> : null}
+                  {m.userEmail ? <>From: {m.userEmail} • </> : null}
+                  {m.audienceRoles?.length ? <>To: {m.audienceRoles.join(", ")}</> : null}
                 </div>
-                <p>{m.body}</p>
+                <p>{m.body || m.message}</p>
               </li>
             ))}
           </ul>
