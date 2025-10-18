@@ -2,21 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../styles/NotificationsPage.css";
-import { apiGet, createNotification } from "../api/client.js";
-
-
-const demoMessages =[
-    { id: 1, from: "Admin", to: "All Volunteers", subject: "Saturday Clean-Up", body: "Arrive 9AM. Bring gloves." },
-    { id: 2, from: "Event Lead", to: "Dog Walkers", subject: "5 puppies need walks", body: "We are short dog walkers." },
-];
-
+import { listNotifications, createNotification } from "../firebase/firestore.js";
 
 const NotificationsPage = () => {
+  const { user, loading: authLoading } = useAuth();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
   const location = useLocation();
 
+  // Get current user from localStorage
   const user = JSON.parse(localStorage.getItem("currentUser") || "null");
   const isAdmin = user?.isAdmin || false;
 
@@ -25,13 +20,8 @@ const NotificationsPage = () => {
     : "/dashboard";
 
   useEffect(() => {
-    if (!user) {
-      setErr("No logged-in user found.");
-      setLoading(false);
-      return;
-    }
-
     let alive = true;
+
     (async () => {
       try {
         setLoading(true);
@@ -53,11 +43,13 @@ const NotificationsPage = () => {
     })();
 
     return () => { alive = false; };
-  }, []);
+  }, [user.email, user.role]);
 
   /* ----------------- Send notification ----------------- */
   const handleSend = async (e) => {
     e.preventDefault();
+    if (!user) return;
+
     const subject = e.target.subject.value;
     const body = e.target.body.value;
 
@@ -69,8 +61,9 @@ const NotificationsPage = () => {
       });
       e.target.reset();
       alert("Notification sent!");
-      // Refresh list after sending
-      const updated = await listNotifications();
+
+      // Refresh list
+      const updated = await listNotifications(user.email, user.role);
       setMessages(updated);
     } catch (err) {
       alert("Failed to send notification: " + err.message);
